@@ -1,0 +1,33 @@
+Generally while doing programming in any language we need to use various variables to store various information.
+Variables are nothing but reserved memory locations to store value
+
+	In contrast to other programming languages like C and Java, in R the variables are not declared as some data types. The variables are assigned with R objects and the data types of the R object becomes the data type of variable. There are many types of R objects.
+The frequently used ones are 
+vectors
+list
+matrices
+arrays
+factors
+data frames
+
+Vector -  the simplest of these objects is vector object, and there are six datatypes of these atomic vectors also termed as six classes of vectors. These classes are 
+	1. logical
+	2. numeric
+	3. integer
+	4. complex
+	5. character
+	6. raw data
+
+
+   Q. If you need a vector that contains the number 1, repeatedly exactly 20 times, what is the command for that?
+   Q. If you want to create a numeric vector where values 95 and 82 are assigned to maths and science subject, what is the command?
+  
+	
+
+
+
+
+
+
+
+
