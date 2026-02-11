@@ -1,49 +1,51 @@
-const { log } = require("console");
-const express = require("express");
-const fs = require("fs/promises");
+const { log } = require('console')
+const express = require('express')
+const app = express()
+const fs = require('fs')
+const PORT = 3000
 
-const app = express();
-app.use(express.json());
-
-const PORT = 8000;
-app.listen(PORT, () => {
-  console.log("Server is running on port 8000");
-});
-
+const fileAuthMiddleware = (req, res, next) => {
+  console.log("I am checking");
+  return res.send("auth failed")
+}
 app.use((req, res, next) => {
-  console.log("I am a middleware 1");
-  next();
-});
 
-app.use((req, res, next) => {
-  console.log("I am a middleware 2");
-  next();
-});
+  const log = `\nRequest at: ${new Date().toLocaleString()}, Method: ${req.method}, URL: ${req.url}`;
 
-const FileauthMiddleware=(req,res,next)=>{
-    console.log("I am checking file")
-    return res.send("auth failed")
+
+  fs.appendFile("log.txt", log, (err) => {
+    if (err) {
+      console.log(err);
+    }
+  })
+  next()
+})
+
+const readStudentsFromFile = async (req, res) => {
+  const data = await fs.readFile('./students.json', 'utf-8')
+  return JSON.parse(data || "[]")
 }
 
-app.use((req, res, next) => {
-    const token = req.headers["authorization"];
-});
-
-const readStudentsFromFile = async () => {
- 
-    const data = await fs.readFile("./student.json", "utf-8");
-    return JSON.parse(data || "[]");
-  
-};
-
 const writeStudentsToFile = async (records) => {
-  await fs.writeFile(
-    "./student.json",
-    JSON.stringify(records, null, 2)
-  );
-};
+  await fs.writeFile('./students.json', JSON.stringify(records, null, 2))
+}
 
-app.get("/students",FileauthMiddleware, async (req, res) => {
-  const students = await readStudentsFromFile();
-  res.status(200).json(students);
-});
+const authMiddleware = (req, res, next) => {
+  const token = req.headers.authorization;
+  if (!token) return res.status(404).json({ message: "Token not found" })
+
+  if (token == "secretToken") {
+    return res.status(200).json({ message: "Passed" })
+  }
+  next()
+
+}
+
+app.get('/students', authMiddleware, async (req, res) => {
+  const students = await readStudentsFromFile()
+  return res.status(200).json(students)
+})
+
+app.listen(PORT, () => {
+  console.log(`Server running on ${PORT}`);
+})
