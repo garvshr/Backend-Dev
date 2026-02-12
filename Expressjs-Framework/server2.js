@@ -10,6 +10,7 @@ app.get('/register', (req, res) => {
   res.sendFile(path.join(__dirname, "public", "form.html"));
 });
 
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.post('/register', (req, res) => {
