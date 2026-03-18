@@ -1,0 +1,33 @@
+db.createCollection("students")
+
+db.students.insertMany(
+[
+  {"name" : "ram", "age" : 21, "course" : "BCA", "city" : "Agra", "feesPaid" : "Y"},
+  {"name" : "sham", "age" : 23, "course" : "MBA", "city" : "Mathura", "feesPaid" : "N"},
+  {"name" : "sham", "age" : 20, "course" : "BTech", "city" : "Patna", "feesPaid" : "Y"},
+  {"name" : "garv", "age" : 24, "course" : "MBA", "city" : "Agra", "feesPaid" : "Y"},
+  {"name" : "harsh", "age" : 19, "course" : "Btech", "city" : "Delhi", "feesPaid" : "N"}
+]
+)
+
+db.students.find({course : "BCA"})
+
+db.students.find({age : {$gt : 20}})
+
+db.students.find({}, { name: 1, course: 1, _id: 0 })
+
+db.students.updateOne({name : "ram"}, {$set : {course : "MCA"}})
+
+db.students.updateMany(
+  { course: "BCA" },
+  { $set: { course: "MCA" } }
+)
+
+db.students.updateMany(
+  { age: { $gt: 22 } },
+  { $set: { feesPaid: true } }
+)
+
+db.students.deleteMany({ feesPaid: false })
+
+db.students.deleteMany({ age: { $lt: 20 } })
