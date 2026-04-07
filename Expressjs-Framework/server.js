@@ -1,15 +1,16 @@
 const express = require('express');
+const studentRoutes = require('./routes/studentRoute');
 const app = express();
 const PORT = 3000;
-
-const studentRoutes = require('./routes/studentRoute');
-
+const dotenv = require('dotenv');
+const mongoose = require('mongoose');
+dotenv.config();
 app.use('/api/students', studentRoutes);
+app.use(express.json());
 
-app.get('/api/students', (req, res) => {
-    res.json('Get all students');
-});
-
+mongoose.connect(process.env.MONGO_URI)
+    .then(() => console.log('Connected to MongoDB'))
+    .catch(err => console.error('MongoDB connection error:', err));
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

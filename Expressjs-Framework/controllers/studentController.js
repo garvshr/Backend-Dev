@@ -1,5 +1,5 @@
 const fs = require('fs').promises;
-const db = require('../modules/');
+//const db = require('../modules/');
 
 const getAllStudents = async (req, res) => {
     try {
